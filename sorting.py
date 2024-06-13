@@ -1,5 +1,6 @@
 import heapq
 import os
+import random
 
 
 # outer loop on all elements i
@@ -10,7 +11,7 @@ def bubble_sort(nums):
     """
     TC, SC = O(n^2), O(1)
     best, worst = O(n), O(n^2)
-    stable: Yes. It means original order of equal elements are maintained.
+    stable: Yes. (original order of equal elements are maintained.)
     when to use: 
         * when array is nearly sorted. 
         * small array when simplicity beneficial.
@@ -81,7 +82,7 @@ def insertion_sort(arr):
     """
     TC, SC = O(n^2), O(1)
     best, worst = O(n^2), O(n^2)
-    stable: No
+    stable: Yes
     when to use:
         * when array is nearly sorted. 
         * small array when simplicity beneficial
@@ -272,9 +273,26 @@ def merge_chunks(chunk_files, output_file):
 #################################################################################
 
 
+def quick_sort(nums):
+    def helper(start, end):
+        if start > end:
+            return
+        pind = random.randint(start, end)
+        nums[pind], nums[start] = nums[start], nums[pind]
+        orange = start
+        for green in range(start+1, end+1):
+            if nums[green] < nums[start]:
+                orange += 1
+                nums[orange], nums[green] = nums[green], nums[orange]
+        nums[orange], nums[start] = nums[start], nums[orange]
+        # orange is at pivot ind now and pivot is in final correct place.
+        helper(start, orange-1)
+        helper(orange+1, end)
 
+    helper(0, len(nums)-1)
+    return nums
 
-
-
+arr = [64, 34, 25, 12, 22, 11, 90]
+print("Sorted array quick sort:", quick_sort(arr))
 
 
