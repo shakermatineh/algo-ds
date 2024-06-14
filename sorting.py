@@ -272,7 +272,8 @@ def merge_chunks(chunk_files, output_file):
 #################################################################################
 #################################################################################
 
-
+# quick sort using Lomuto's partitioning 2 way.
+# This can timout if many elements are equal to randomly selected pivot.
 def quick_sort(nums):
     def helper(start, end):
         if start > end:
@@ -296,3 +297,115 @@ arr = [64, 34, 25, 12, 22, 11, 90]
 print("Sorted array quick sort:", quick_sort(arr))
 
 
+#################################################################################
+#################################################################################
+
+# Quick sort using 3-way partitioning similar to Dutch National Flag problem,
+# that also check if current element is equal to pivot. At the end 
+# element smaller than pivot sit before low pointer and elements greater
+# than pivot at after high pointer, and everything in between low and high (inclusive)
+# is equal to pivot. We only recurse on left of low (<pivot) and right of high (>pivot).
+def quick_sort_3way(nums):
+    def helper(start, end):
+        if start >= end:
+            return
+        
+        # Three-way partitioning
+        pivot_index = random.randint(start, end)
+        pivot = nums[pivot_index]
+        nums[pivot_index], nums[start] = nums[start], nums[pivot_index]
+        
+        low = start
+        mid = start
+        high = end
+
+        while mid <= high:
+            if nums[mid] < pivot:
+                nums[low], nums[mid] = nums[mid], nums[low]
+                low += 1
+                mid += 1
+            elif nums[mid] > pivot:
+                nums[high], nums[mid] = nums[mid], nums[high]
+                high -= 1
+            else:
+                mid += 1
+
+        # Recursive calls
+        helper(start, low - 1)
+        helper(high + 1, end)
+
+    helper(0, len(nums) - 1)
+    return nums
+
+arr = [64, 34, 25, 12, 11, 22, 11, 90, 11]
+print("Sorted array quick sort:", quick_sort_3way(arr))
+
+
+#################################################################################
+#################################################################################
+
+# sort and array of 0's and 1's and 2's.
+def dutch_national_flag(nums):
+    low = 0
+    curr = 0
+    high = len(nums) - 1
+
+    while curr <= high:
+        if nums[curr] == 0:
+            nums[low], nums[curr] = nums[curr], nums[low]
+            low += 1
+            curr += 1
+        elif nums[curr] == 1:
+            curr += 1
+        else:  # nums[mid] == 2
+            nums[high], nums[curr] = nums[curr], nums[high]
+            high -= 1
+
+    return nums
+
+# Example usage
+nums = [2, 0, 2, 2, 2, 0, 1, 1, 0]
+print(dutch_national_flag(nums))
+
+
+#################################################################################
+#################################################################################
+
+# Quick Select algorithm. LC 215
+# timeout if we do two-way partitioning
+def findKthLargest(nums, k):
+    def helper(start, end, target_ind):
+        if start >= end:
+            return nums[start]
+        
+        pivot_index = random.randint(start, end)
+        pivot = nums[pivot_index]
+        nums[pivot_index], nums[start] = nums[start], nums[pivot_index]
+
+        low = start
+        mid = start
+        high = end
+
+        while mid <= high:
+            if nums[mid] < pivot:
+                nums[low], nums[mid] = nums[mid], nums[low]
+                low += 1
+                mid += 1
+            elif nums[mid] > pivot:
+                nums[high], nums[mid] = nums[mid], nums[high]
+                high -= 1
+            else:
+                mid += 1
+
+
+        if target_ind >= low and target_ind <= high:
+            return nums[target_ind]
+        elif target_ind < low:
+            return helper(start, low - 1, target_ind)
+        else:
+            return helper(high + 1, end, target_ind)
+
+    return helper(0, len(nums) - 1, len(nums) - k)
+
+nums = [3,2,3,1,2,4,5,5,6]
+print(findKthLargest(nums, 4)) # output = 4
