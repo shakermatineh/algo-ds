@@ -1,6 +1,11 @@
 import math
 
+# Write a python function that compute running standard deviation for a strea of numbers
 class RunningSampleStats:
+    """
+    https://jonisalonen.com/2013/deriving-welfords-method-for-computing-variance/
+    https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance
+    """
     def __init__(self):
         self.n = 0
         self.mean = 0.0
