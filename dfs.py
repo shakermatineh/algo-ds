@@ -21,6 +21,7 @@ def permute(nums):
 
 permute([4, 5, 6])
 
+
 #------------------------------------------------------------------------
 
 # LC 47
@@ -43,17 +44,17 @@ def permuteUnique(nums):
     helper([])
     return out
 
+
 #---------------------------------
 
 def myPow(x: float, n: int) -> float:
-    print(n)
     if n == 0:
         return 1
     elif n < 0:
-        return myPow(1/x, abs(n))
-    prev = myPow(x, n-1)
-    return x * prev
+        self.myPow(1/x, abs(n))
+    return x * self.myPow(x, n-1)
 
-# print(myPow(2.0, 10))
-# print(myPow(2.1, 3))
+print(myPow(2.0, 10))
+print(myPow(2.1, 3))
 print(myPow(2.0, -2))
+
